@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -6,9 +7,19 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import Icon from "@/components/ui/icon";
+import PriceCalculator from "@/components/PriceCalculator";
 
 const Index = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const services = [
     { name: "Визитки", icon: "CreditCard" },
     { name: "Постеры", icon: "Image" },
@@ -99,7 +110,58 @@ const Index = () => {
             <a href="#benefits" className="text-foreground hover:text-primary transition">Преимущества</a>
             <a href="#faq" className="text-foreground hover:text-primary transition">FAQ</a>
           </nav>
-          <Button className="hidden md:inline-flex">Сделать заказ</Button>
+          <div className="flex items-center gap-4">
+            <Button className="hidden md:inline-flex">Сделать заказ</Button>
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                  <Icon name="Menu" size={24} />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <SheetHeader>
+                  <SheetTitle className="flex items-center gap-2">
+                    <Icon name="Printer" size={24} className="text-primary" />
+                    MyPrintShop
+                  </SheetTitle>
+                </SheetHeader>
+                <nav className="flex flex-col gap-6 mt-8">
+                  <a 
+                    href="#services" 
+                    className="text-lg text-foreground hover:text-primary transition py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Услуги
+                  </a>
+                  <a 
+                    href="#how" 
+                    className="text-lg text-foreground hover:text-primary transition py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Как работает
+                  </a>
+                  <a 
+                    href="#benefits" 
+                    className="text-lg text-foreground hover:text-primary transition py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Преимущества
+                  </a>
+                  <a 
+                    href="#faq" 
+                    className="text-lg text-foreground hover:text-primary transition py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    FAQ
+                  </a>
+                  <Button className="mt-4" onClick={() => setMobileMenuOpen(false)}>
+                    <Icon name="ShoppingCart" size={20} className="mr-2" />
+                    Сделать заказ
+                  </Button>
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </header>
 
@@ -180,6 +242,20 @@ const Index = () => {
               </Card>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="py-20 px-4 bg-gradient-to-br from-background to-muted/30">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-secondary mb-4">
+              Рассчитайте стоимость прямо сейчас
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Прозрачное ценообразование без скрытых платежей
+            </p>
+          </div>
+          <PriceCalculator />
         </div>
       </section>
 
