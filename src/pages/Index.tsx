@@ -16,9 +16,18 @@ import {
 } from "@/components/ui/sheet";
 import Icon from "@/components/ui/icon";
 import PriceCalculator from "@/components/PriceCalculator";
+import OrderForm from "@/components/OrderForm";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const Index = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [orderDialogOpen, setOrderDialogOpen] = useState(false);
 
   const services = [
     { name: "Визитки", icon: "CreditCard" },
@@ -111,7 +120,17 @@ const Index = () => {
             <a href="#faq" className="text-foreground hover:text-primary transition">FAQ</a>
           </nav>
           <div className="flex items-center gap-4">
-            <Button className="hidden md:inline-flex">Сделать заказ</Button>
+            <Dialog open={orderDialogOpen} onOpenChange={setOrderDialogOpen}>
+              <DialogTrigger asChild>
+                <Button className="hidden md:inline-flex">Сделать заказ</Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle className="sr-only">Оформление заказа</DialogTitle>
+                </DialogHeader>
+                <OrderForm />
+              </DialogContent>
+            </Dialog>
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="md:hidden">
@@ -175,10 +194,20 @@ const Index = () => {
             Загружайте макет, выбирайте параметры, оплачивайте — всё онлайн за 5 минут. Никаких визитов в офис.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-lg px-8 py-6 shadow-lg hover:shadow-xl transition-all">
-              <Icon name="ShoppingCart" size={20} className="mr-2" />
-              Сделать заказ
-            </Button>
+            <Dialog open={orderDialogOpen} onOpenChange={setOrderDialogOpen}>
+              <DialogTrigger asChild>
+                <Button size="lg" className="text-lg px-8 py-6 shadow-lg hover:shadow-xl transition-all">
+                  <Icon name="ShoppingCart" size={20} className="mr-2" />
+                  Сделать заказ
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle className="sr-only">Оформление заказа</DialogTitle>
+                </DialogHeader>
+                <OrderForm />
+              </DialogContent>
+            </Dialog>
             <Button size="lg" variant="outline" className="text-lg px-8 py-6">
               <Icon name="Send" size={20} className="mr-2" />
               Открыть Telegram-бот
