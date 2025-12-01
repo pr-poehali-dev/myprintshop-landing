@@ -460,13 +460,13 @@ const Index = () => {
                 </li>
                 <li className="flex items-center gap-2">
                   <Icon name="MapPin" size={16} />
-                  <span>Москва, ул. Примерная, 1</span>
+                  <span>г.Краснодар ул.Калинина 13</span>
                 </li>
               </ul>
             </div>
           </div>
           <div className="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-white/70">© 2024 MyPrintShop. Все права защищены.</p>
+            <p className="text-white/70">© 2025 MyPrintShop. Все права защищены.</p>
             <div className="flex gap-6">
               <a href="#" className="text-white/70 hover:text-white transition">Политика конфиденциальности</a>
               <a href="#" className="text-white/70 hover:text-white transition">Пользовательское соглашение</a>
