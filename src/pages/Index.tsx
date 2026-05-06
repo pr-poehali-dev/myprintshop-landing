@@ -110,7 +110,7 @@ const Index = () => {
       <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <Icon name="Printer" size={28} className="text-primary" />
+            <Icon name="Camera" size={28} className="text-primary" />
             <span className="text-2xl font-bold text-secondary">ProPhoto</span>
           </div>
           <nav className="hidden md:flex gap-6">
@@ -140,7 +140,7 @@ const Index = () => {
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                 <SheetHeader>
                   <SheetTitle className="flex items-center gap-2">
-                    <Icon name="Printer" size={24} className="text-primary" />
+                    <Icon name="Camera" size={24} className="text-primary" />
                     ProPhoto
                   </SheetTitle>
                 </SheetHeader>
@@ -424,7 +424,7 @@ const Index = () => {
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Icon name="Printer" size={28} />
+                <Icon name="Camera" size={28} />
                 <span className="text-xl font-bold">ProPhoto</span>
               </div>
               <p className="text-white/70">Печать без лишних хлопот</p>
