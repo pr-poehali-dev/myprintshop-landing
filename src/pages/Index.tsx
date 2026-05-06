@@ -111,7 +111,7 @@ const Index = () => {
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
             <Icon name="Printer" size={28} className="text-primary" />
-            <span className="text-2xl font-bold text-secondary">MyPrintShop</span>
+            <span className="text-2xl font-bold text-secondary">ProPhoto</span>
           </div>
           <nav className="hidden md:flex gap-6">
             <a href="#services" className="text-foreground hover:text-primary transition">Услуги</a>
@@ -141,7 +141,7 @@ const Index = () => {
                 <SheetHeader>
                   <SheetTitle className="flex items-center gap-2">
                     <Icon name="Printer" size={24} className="text-primary" />
-                    MyPrintShop
+                    ProPhoto
                   </SheetTitle>
                 </SheetHeader>
                 <nav className="flex flex-col gap-6 mt-8">
@@ -247,7 +247,7 @@ const Index = () => {
                 <CardContent className="p-8">
                   <h3 className="text-2xl font-bold text-secondary mb-6 flex items-center gap-2">
                     <Icon name="Sparkles" size={28} className="text-primary" />
-                    Решение — MyPrintShop
+                    Решение — ProPhoto
                   </h3>
                   <div className="space-y-4 text-foreground">
                     <div className="flex gap-3 items-start">
@@ -354,7 +354,7 @@ const Index = () => {
             Наши преимущества
           </h2>
           <p className="text-center text-muted-foreground text-lg mb-16">
-            Почему тысячи клиентов выбирают MyPrintShop
+            Почему тысячи клиентов выбирают ProPhoto
           </p>
           <div className="grid md:grid-cols-3 gap-8">
             {benefits.map((benefit, index) => (
@@ -387,7 +387,7 @@ const Index = () => {
           </p>
           <Button size="lg" variant="secondary" className="text-lg px-8 py-6">
             <Icon name="Send" size={20} className="mr-2" />
-            Открыть @MyPrintShop_bot
+            Открыть @ProPhoto_bot
           </Button>
         </div>
       </section>
@@ -425,7 +425,7 @@ const Index = () => {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Icon name="Printer" size={28} />
-                <span className="text-xl font-bold">MyPrintShop</span>
+                <span className="text-xl font-bold">ProPhoto</span>
               </div>
               <p className="text-white/70">Печать без лишних хлопот</p>
             </div>
@@ -466,7 +466,7 @@ const Index = () => {
             </div>
           </div>
           <div className="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-white/70">© 2025 MyPrintShop. Все права защищены.</p>
+            <p className="text-white/70">© 2025 ProPhoto. Все права защищены.</p>
             <div className="flex gap-6">
               <a href="#" className="text-white/70 hover:text-white transition">Политика конфиденциальности</a>
               <a href="#" className="text-white/70 hover:text-white transition">Пользовательское соглашение</a>
