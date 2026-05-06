@@ -12,7 +12,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
 
-const PriceCalculator = () => {
+interface PriceCalculatorProps {
+  onOrder?: () => void;
+}
+
+const PriceCalculator = ({ onOrder }: PriceCalculatorProps) => {
   const [productType, setProductType] = useState("");
   const [quantity, setQuantity] = useState(100);
   const [material, setMaterial] = useState("");
@@ -133,6 +137,7 @@ const PriceCalculator = () => {
             size="lg" 
             className="w-full text-lg h-14"
             disabled={totalPrice === 0}
+            onClick={onOrder}
           >
             <Icon name="ShoppingCart" size={24} className="mr-2" />
             Оформить заказ за {totalPrice > 0 ? `${totalPrice.toLocaleString('ru-RU')} ₽` : '0 ₽'}

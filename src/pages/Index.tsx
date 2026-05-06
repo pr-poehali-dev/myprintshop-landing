@@ -284,7 +284,7 @@ const Index = () => {
               Прозрачное ценообразование без скрытых платежей
             </p>
           </div>
-          <PriceCalculator />
+          <PriceCalculator onOrder={() => setOrderDialogOpen(true)} />
         </div>
       </section>
 
