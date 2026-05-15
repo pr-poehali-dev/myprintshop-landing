@@ -342,20 +342,38 @@ const OrderForm = () => {
               />
               {size && (
                 <div className="flex flex-wrap gap-2 pt-1">
-                  {tiers.map((t) => (
-                    <button
-                      key={t}
-                      type="button"
-                      onClick={() => setQuantity(t)}
-                      className={`text-xs px-3 py-1 rounded-full border transition ${
-                        quantity === t
-                          ? "bg-primary text-primary-foreground border-primary"
-                          : "bg-background hover:bg-muted border-border"
-                      }`}
-                    >
-                      {t.toLocaleString("ru-RU")} — {size.prices[t].toLocaleString("ru-RU")} ₽
-                    </button>
-                  ))}
+                  {[...tiers, 50000, 100000, 500000].map((t) => {
+                    const tierPrice = size.prices[t];
+                    const label = tierPrice
+                      ? `${t.toLocaleString("ru-RU")} — ${tierPrice.toLocaleString("ru-RU")} ₽`
+                      : t.toLocaleString("ru-RU");
+                    return (
+                      <div
+                        key={t}
+                        className={`inline-flex items-center rounded-full border overflow-hidden transition ${
+                          quantity === t
+                            ? "bg-primary text-primary-foreground border-primary"
+                            : "bg-background border-border"
+                        }`}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => setQuantity(t)}
+                          className="text-xs px-3 py-1 hover:bg-muted/40"
+                        >
+                          {label}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setQuantity((q) => q + t)}
+                          title={`Добавить ${t.toLocaleString("ru-RU")} к тиражу`}
+                          className="text-xs px-2 py-1 border-l border-inherit hover:bg-muted/40"
+                        >
+                          +
+                        </button>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>
