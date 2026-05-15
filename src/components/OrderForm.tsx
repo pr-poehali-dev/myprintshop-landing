@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import {
@@ -15,125 +15,131 @@ import { Separator } from "@/components/ui/separator";
 import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
 
-interface ProductSize {
+type PriceTable = Record<number, number>;
+
+interface SizeOption {
   value: string;
   label: string;
-  priceMultiplier: number;
+  prices: PriceTable;
 }
 
-interface Product {
+interface ProductCategory {
   value: string;
   label: string;
   icon: string;
-  basePrice: number;
-  sizes: ProductSize[];
+  note?: string;
+  sizes: SizeOption[];
 }
+
+const FLYERS: SizeOption[] = [
+  { value: "a7", label: "A7 74×105 мм", prices: { 1000: 1500, 2000: 1900, 3000: 2300, 5000: 3000, 10000: 5500 } },
+  { value: "a6", label: "A6 105×148 мм", prices: { 1000: 2000, 2000: 2900, 3000: 3800, 5000: 5500, 10000: 9000 } },
+  { value: "a5", label: "A5 148×210 мм", prices: { 1000: 3800, 2000: 5400, 3000: 7000, 5000: 9500, 10000: 16000 } },
+  { value: "euro", label: "Евро 99×210 мм", prices: { 1000: 2600, 2000: 3700, 3000: 4800, 5000: 7000, 10000: 12000 } },
+  { value: "a4", label: "A4 210×297 мм", prices: { 1000: 6000, 2000: 8600, 3000: 11200, 5000: 16000, 10000: 30000 } },
+  { value: "booklet-a4", label: "Буклет A4 2 сл.", prices: { 1000: 7000, 2000: 10000, 3000: 13200, 5000: 18500, 10000: 36000 } },
+];
+
+const BUSINESS_CARDS: SizeOption[] = [
+  { value: "standard", label: "Визитка 300 г/м²", prices: { 1000: 1500, 2000: 2800, 3000: 4000, 5000: 6000, 10000: 11000 } },
+  { value: "hole", label: "С отверстием", prices: { 1000: 2500, 2000: 4000, 3000: 6000, 5000: 9000, 10000: 17000 } },
+  { value: "rounded", label: "Скруглённые углы", prices: { 1000: 3000, 2000: 4500, 3000: 6500, 5000: 10000, 10000: 18000 } },
+  { value: "hole-rounded", label: "Отверстие + скр. углы", prices: { 1000: 3500, 2000: 6000, 3000: 8500, 5000: 14000, 10000: 25000 } },
+  { value: "laminated", label: "С ламинацией 1+0", prices: { 1000: 3000, 2000: 4500, 3000: 6000, 5000: 9000, 10000: 17000 } },
+  { value: "sticker-paper", label: "Самоклейка (бумага)", prices: { 1000: 2000, 2000: 3500, 3000: 5000, 5000: 7000, 10000: 12000 } },
+];
+
+const STICKERS: SizeOption[] = [
+  { value: "50x90", label: "50×90 мм (визитка)", prices: { 1000: 2000, 2000: 3500, 5000: 7000, 10000: 12000 } },
+  { value: "70x100", label: "70×100 мм", prices: { 1000: 2500, 2000: 4000, 5000: 9000, 10000: 17000 } },
+  { value: "a6", label: "A6 105×148 мм", prices: { 1000: 5000, 2000: 8000, 5000: 17000, 10000: 33000 } },
+  { value: "a5", label: "A5 148×210 мм", prices: { 1000: 9000, 2000: 16000, 5000: 33000, 10000: 65000 } },
+  { value: "euro", label: "Евро 99×210 мм", prices: { 1000: 7000, 2000: 13000, 5000: 27000, 10000: 52000 } },
+  { value: "a4", label: "A4 210×297 мм", prices: { 1000: 18000, 2000: 33000, 5000: 75000, 10000: 143000 } },
+  { value: "a3", label: "A3 297×420 мм", prices: { 1000: 35000, 2000: 64000, 5000: 150000, 10000: 295000 } },
+  { value: "circle-58", label: "Круг 58 или 59 мм", prices: { 1000: 2500, 2000: 4000, 5000: 8000, 10000: 15000 } },
+  { value: "circle-61", label: "Круг 61 или 64 мм", prices: { 1000: 2500, 2000: 4000, 5000: 9000, 10000: 16000 } },
+  { value: "circle-69", label: "Круг 69 мм", prices: { 1000: 3000, 2000: 4500, 5000: 9500, 10000: 16500 } },
+  { value: "circle-89", label: "Круг 89 мм", prices: { 1000: 4000, 2000: 6000, 5000: 14000, 10000: 26000 } },
+];
+
+const CATEGORIES: ProductCategory[] = [
+  {
+    value: "flyers",
+    label: "Листовки",
+    icon: "FileText",
+    note: "Плотность 115 г/м², печать 4+0 или 4+4. Срок 3–5 раб. дней.",
+    sizes: FLYERS,
+  },
+  {
+    value: "business-cards",
+    label: "Визитки",
+    icon: "CreditCard",
+    note: "Плотность 300 г/м², печать 4+0 или 4+4.",
+    sizes: BUSINESS_CARDS,
+  },
+  {
+    value: "stickers",
+    label: "Самоклейка",
+    icon: "Sticker",
+    note: "Основа — бумага.",
+    sizes: STICKERS,
+  },
+];
+
+const computePrice = (size: SizeOption | undefined, quantity: number) => {
+  if (!size || quantity < 1) return 0;
+  const tiers = Object.keys(size.prices).map(Number).sort((a, b) => a - b);
+  if (tiers.length === 0) return 0;
+
+  if (quantity <= tiers[0]) {
+    const perUnit = size.prices[tiers[0]] / tiers[0];
+    return Math.round(perUnit * quantity);
+  }
+  const last = tiers[tiers.length - 1];
+  if (quantity >= last) {
+    const perUnit = size.prices[last] / last;
+    return Math.round(perUnit * quantity);
+  }
+  let lower = tiers[0];
+  let upper = last;
+  for (let i = 0; i < tiers.length - 1; i++) {
+    if (quantity >= tiers[i] && quantity <= tiers[i + 1]) {
+      lower = tiers[i];
+      upper = tiers[i + 1];
+      break;
+    }
+  }
+  const pLow = size.prices[lower];
+  const pUp = size.prices[upper];
+  const ratio = (quantity - lower) / (upper - lower);
+  return Math.round(pLow + (pUp - pLow) * ratio);
+};
 
 const OrderForm = () => {
   const [step, setStep] = useState(1);
-  const [productType, setProductType] = useState("");
-  const [size, setSize] = useState("");
-  const [quantity, setQuantity] = useState(100);
-  const [material, setMaterial] = useState("");
+  const [categoryValue, setCategoryValue] = useState("");
+  const [sizeValue, setSizeValue] = useState("");
+  const [quantity, setQuantity] = useState(1000);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const products: Product[] = [
-    {
-      value: "business-cards",
-      label: "Визитки",
-      icon: "CreditCard",
-      basePrice: 0.5,
-      sizes: [
-        { value: "90x50", label: "90×50 мм (стандарт)", priceMultiplier: 1 },
-        { value: "85x55", label: "85×55 мм (евро)", priceMultiplier: 1.1 },
-      ],
-    },
-    {
-      value: "posters",
-      label: "Постеры",
-      icon: "Image",
-      basePrice: 5,
-      sizes: [
-        { value: "a4", label: "A4 (210×297 мм)", priceMultiplier: 1 },
-        { value: "a3", label: "A3 (297×420 мм)", priceMultiplier: 1.5 },
-        { value: "a2", label: "A2 (420×594 мм)", priceMultiplier: 2.5 },
-        { value: "a1", label: "A1 (594×841 мм)", priceMultiplier: 4 },
-      ],
-    },
-    {
-      value: "flyers",
-      label: "Листовки",
-      icon: "FileText",
-      basePrice: 1.5,
-      sizes: [
-        { value: "a6", label: "A6 (105×148 мм)", priceMultiplier: 0.8 },
-        { value: "a5", label: "A5 (148×210 мм)", priceMultiplier: 1 },
-        { value: "a4", label: "A4 (210×297 мм)", priceMultiplier: 1.3 },
-      ],
-    },
-    {
-      value: "booklets",
-      label: "Буклеты",
-      icon: "Book",
-      basePrice: 3,
-      sizes: [
-        { value: "a5", label: "A5 (148×210 мм)", priceMultiplier: 1 },
-        { value: "a4", label: "A4 (210×297 мм)", priceMultiplier: 1.4 },
-      ],
-    },
-    {
-      value: "photobooks",
-      label: "Фотокниги",
-      icon: "BookOpen",
-      basePrice: 15,
-      sizes: [
-        { value: "20x20", label: "20×20 см", priceMultiplier: 1 },
-        { value: "30x30", label: "30×30 см", priceMultiplier: 1.8 },
-      ],
-    },
-    {
-      value: "calendars",
-      label: "Календари",
-      icon: "Calendar",
-      basePrice: 8,
-      sizes: [
-        { value: "a4", label: "A4 настенный", priceMultiplier: 1 },
-        { value: "a3", label: "A3 настенный", priceMultiplier: 1.5 },
-      ],
-    },
-  ];
+  const category = useMemo(
+    () => CATEGORIES.find((c) => c.value === categoryValue),
+    [categoryValue],
+  );
+  const size = useMemo(
+    () => category?.sizes.find((s) => s.value === sizeValue),
+    [category, sizeValue],
+  );
 
-  const materials = [
-    { value: "standard", label: "Стандартная (300 г/м²)", multiplier: 1 },
-    { value: "premium", label: "Премиум (350 г/м²)", multiplier: 1.3 },
-    { value: "glossy", label: "Глянцевая (300 г/м²)", multiplier: 1.2 },
-    { value: "matte", label: "Матовая (350 г/м²)", multiplier: 1.4 },
-  ];
+  const tiers = useMemo(
+    () => (size ? Object.keys(size.prices).map(Number).sort((a, b) => a - b) : []),
+    [size],
+  );
 
-  const selectedProduct = products.find((p) => p.value === productType);
-  const selectedSize = selectedProduct?.sizes.find((s) => s.value === size);
-  const selectedMaterial = materials.find((m) => m.value === material);
-
-  const calculatePrice = () => {
-    if (!selectedProduct || !selectedSize || !selectedMaterial || quantity < 1)
-      return 0;
-
-    let basePrice =
-      selectedProduct.basePrice *
-      quantity *
-      selectedSize.priceMultiplier *
-      selectedMaterial.multiplier;
-
-    if (quantity >= 1000) basePrice *= 0.8;
-    else if (quantity >= 500) basePrice *= 0.85;
-    else if (quantity >= 200) basePrice *= 0.9;
-
-    return Math.round(basePrice);
-  };
-
-  const totalPrice = calculatePrice();
+  const totalPrice = useMemo(() => computePrice(size, quantity), [size, quantity]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -181,11 +187,11 @@ const OrderForm = () => {
   };
 
   const handleNextStep = () => {
-    if (step === 1 && !productType) {
-      toast.error("Выберите тип продукции");
+    if (step === 1 && !categoryValue) {
+      toast.error("Выберите категорию продукции");
       return;
     }
-    if (step === 2 && (!size || !material)) {
+    if (step === 2 && (!sizeValue || quantity < 1)) {
       toast.error("Заполните все параметры");
       return;
     }
@@ -204,10 +210,9 @@ const OrderForm = () => {
 
   const resetForm = () => {
     setStep(1);
-    setProductType("");
-    setSize("");
-    setQuantity(100);
-    setMaterial("");
+    setCategoryValue("");
+    setSizeValue("");
+    setQuantity(1000);
     setUploadedFile(null);
     setPreviewUrl("");
     if (fileInputRef.current) {
@@ -245,39 +250,45 @@ const OrderForm = () => {
             <div>
               <h3 className="text-xl font-bold text-secondary mb-4 flex items-center gap-2">
                 <Icon name="Package" size={24} className="text-primary" />
-                Выберите тип продукции
+                Выберите категорию продукции
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {products.map((product) => (
-                  <Card
-                    key={product.value}
-                    className={`cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-105 ${
-                      productType === product.value
-                        ? "border-2 border-primary bg-primary/5"
-                        : "border-2 border-transparent hover:border-primary/30"
-                    }`}
-                    onClick={() => {
-                      setProductType(product.value);
-                      setSize("");
-                    }}
-                  >
-                    <CardContent className="p-6 text-center">
-                      <Icon
-                        name={product.icon}
-                        size={48}
-                        className={`mx-auto mb-3 ${
-                          productType === product.value
-                            ? "text-primary"
-                            : "text-muted-foreground"
-                        }`}
-                      />
-                      <h4 className="font-semibold text-lg">{product.label}</h4>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        от {product.basePrice} ₽/шт
-                      </p>
-                    </CardContent>
-                  </Card>
-                ))}
+                {CATEGORIES.map((c) => {
+                  const firstSize = c.sizes[0];
+                  const firstTier = Object.keys(firstSize.prices).map(Number).sort((a, b) => a - b)[0];
+                  const fromPrice = firstSize.prices[firstTier];
+                  return (
+                    <Card
+                      key={c.value}
+                      className={`cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-105 ${
+                        categoryValue === c.value
+                          ? "border-2 border-primary bg-primary/5"
+                          : "border-2 border-transparent hover:border-primary/30"
+                      }`}
+                      onClick={() => {
+                        setCategoryValue(c.value);
+                        setSizeValue("");
+                      }}
+                    >
+                      <CardContent className="p-6 text-center">
+                        <Icon
+                          name={c.icon}
+                          fallback="Package"
+                          size={48}
+                          className={`mx-auto mb-3 ${
+                            categoryValue === c.value
+                              ? "text-primary"
+                              : "text-muted-foreground"
+                          }`}
+                        />
+                        <h4 className="font-semibold text-lg">{c.label}</h4>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          от {fromPrice.toLocaleString("ru-RU")} ₽ за {firstTier.toLocaleString("ru-RU")} шт.
+                        </p>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -290,22 +301,25 @@ const OrderForm = () => {
                 <Icon name="Settings" size={24} className="text-primary" />
                 Параметры заказа
               </h3>
-              <div className="flex items-center gap-2 mb-6 text-muted-foreground">
-                <Icon name={selectedProduct?.icon || "Package"} size={20} />
-                <span className="font-semibold">{selectedProduct?.label}</span>
+              <div className="flex items-center gap-2 mb-2 text-muted-foreground">
+                <Icon name={category?.icon || "Package"} fallback="Package" size={20} />
+                <span className="font-semibold">{category?.label}</span>
               </div>
+              {category?.note && (
+                <p className="text-sm text-muted-foreground italic">{category.note}</p>
+              )}
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="size" className="text-base font-semibold">
-                Размер
+                Формат / вариант
               </Label>
-              <Select value={size} onValueChange={setSize}>
+              <Select value={sizeValue} onValueChange={setSizeValue}>
                 <SelectTrigger id="size" className="h-12">
-                  <SelectValue placeholder="Выберите размер" />
+                  <SelectValue placeholder="Выберите формат" />
                 </SelectTrigger>
                 <SelectContent>
-                  {selectedProduct?.sizes.map((s) => (
+                  {category?.sizes.map((s) => (
                     <SelectItem key={s.value} value={s.value}>
                       {s.label}
                     </SelectItem>
@@ -326,32 +340,24 @@ const OrderForm = () => {
                 onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
                 className="h-12 text-lg"
               />
-              {quantity >= 200 && (
-                <p className="text-sm font-semibold text-primary flex items-center gap-1">
-                  <Icon name="Tag" size={16} />
-                  {quantity >= 1000 && "Скидка 20%!"}
-                  {quantity >= 500 && quantity < 1000 && "Скидка 15%!"}
-                  {quantity >= 200 && quantity < 500 && "Скидка 10%!"}
-                </p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="material" className="text-base font-semibold">
-                Материал
-              </Label>
-              <Select value={material} onValueChange={setMaterial}>
-                <SelectTrigger id="material" className="h-12">
-                  <SelectValue placeholder="Выберите материал" />
-                </SelectTrigger>
-                <SelectContent>
-                  {materials.map((mat) => (
-                    <SelectItem key={mat.value} value={mat.value}>
-                      {mat.label}
-                    </SelectItem>
+              {size && (
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {tiers.map((t) => (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={() => setQuantity(t)}
+                      className={`text-xs px-3 py-1 rounded-full border transition ${
+                        quantity === t
+                          ? "bg-primary text-primary-foreground border-primary"
+                          : "bg-background hover:bg-muted border-border"
+                      }`}
+                    >
+                      {t.toLocaleString("ru-RU")} — {size.prices[t].toLocaleString("ru-RU")} ₽
+                    </button>
                   ))}
-                </SelectContent>
-              </Select>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -455,30 +461,19 @@ const OrderForm = () => {
             <Card className="bg-muted/30">
               <CardContent className="p-6 space-y-4">
                 <div className="flex justify-between items-start">
-                  <span className="text-muted-foreground">Продукция:</span>
-                  <span className="font-semibold text-right">
-                    {selectedProduct?.label}
-                  </span>
+                  <span className="text-muted-foreground">Категория:</span>
+                  <span className="font-semibold text-right">{category?.label}</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between items-start">
-                  <span className="text-muted-foreground">Размер:</span>
-                  <span className="font-semibold text-right">
-                    {selectedSize?.label}
-                  </span>
+                  <span className="text-muted-foreground">Формат:</span>
+                  <span className="font-semibold text-right">{size?.label}</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between items-start">
                   <span className="text-muted-foreground">Тираж:</span>
                   <span className="font-semibold text-right">
-                    {quantity} шт.
-                  </span>
-                </div>
-                <Separator />
-                <div className="flex justify-between items-start">
-                  <span className="text-muted-foreground">Материал:</span>
-                  <span className="font-semibold text-right">
-                    {selectedMaterial?.label}
+                    {quantity.toLocaleString("ru-RU")} шт.
                   </span>
                 </div>
                 <Separator />
@@ -496,7 +491,7 @@ const OrderForm = () => {
                   </span>
                 </div>
                 <p className="text-sm text-muted-foreground text-center">
-                  Срок изготовления: 2-3 рабочих дня
+                  Срок изготовления: 3–5 рабочих дней
                 </p>
               </CardContent>
             </Card>
@@ -521,8 +516,8 @@ const OrderForm = () => {
               onClick={handleNextStep}
               className="flex-1"
               disabled={
-                (step === 1 && !productType) ||
-                (step === 2 && (!size || !material)) ||
+                (step === 1 && !categoryValue) ||
+                (step === 2 && (!sizeValue || quantity < 1)) ||
                 (step === 3 && !uploadedFile)
               }
             >

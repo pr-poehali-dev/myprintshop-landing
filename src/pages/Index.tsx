@@ -30,14 +30,14 @@ const Index = () => {
   const [orderDialogOpen, setOrderDialogOpen] = useState(false);
 
   const services = [
-    { name: "Визитки", icon: "CreditCard" },
-    { name: "Постеры", icon: "Image" },
-    { name: "Листовки", icon: "FileText" },
-    { name: "Буклеты", icon: "Book" },
-    { name: "Фотокниги", icon: "BookOpen" },
-    { name: "Календари", icon: "Calendar" },
-    { name: "Сувениры", icon: "Gift" },
-    { name: "Упаковка", icon: "Package" },
+    { name: "Визитки", icon: "CreditCard", desc: "300 г/м², 4+0 или 4+4" },
+    { name: "Листовки", icon: "FileText", desc: "A7–A4, 115 г/м²" },
+    { name: "Буклеты A4", icon: "Book", desc: "2 сложения, 115 г/м²" },
+    { name: "Самоклейка", icon: "Sticker", desc: "От 50×90 мм до A3" },
+    { name: "Круглые наклейки", icon: "Circle", desc: "Ø 58, 61, 64, 69, 89 мм" },
+    { name: "Визитки с ламинацией", icon: "Layers", desc: "Ламинация 1+0" },
+    { name: "Скруглённые углы", icon: "Square", desc: "На визитках и наклейках" },
+    { name: "Срочная печать", icon: "Zap", desc: "3–5 рабочих дней" },
   ];
 
   const steps = [
@@ -89,7 +89,7 @@ const Index = () => {
     },
     {
       question: "Как быстро выполняется заказ?",
-      answer: "Стандартный срок — 2-3 дня. Экспресс-печать возможна за 1 день с доплатой 30%."
+      answer: "Стандартный срок — 3–5 рабочих дней, не считая день заказа. Возможно изготовление быстрее — цену и сроки уточняйте."
     },
     {
       question: "Можно ли заказать без готового макета?",
@@ -304,8 +304,9 @@ const Index = () => {
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <CardContent className="p-6 text-center">
-                  <Icon name={service.icon} size={48} className="text-primary mx-auto mb-4" />
+                  <Icon name={service.icon} fallback="Package" size={48} className="text-primary mx-auto mb-4" />
                   <h3 className="font-semibold text-foreground">{service.name}</h3>
+                  <p className="text-xs text-muted-foreground mt-1">{service.desc}</p>
                 </CardContent>
               </Card>
             ))}
@@ -433,9 +434,9 @@ const Index = () => {
               <h4 className="font-bold mb-4">Услуги</h4>
               <ul className="space-y-2 text-white/70">
                 <li><a href="#" className="hover:text-white transition">Визитки</a></li>
-                <li><a href="#" className="hover:text-white transition">Постеры</a></li>
                 <li><a href="#" className="hover:text-white transition">Листовки</a></li>
-                <li><a href="#" className="hover:text-white transition">Фотокниги</a></li>
+                <li><a href="#" className="hover:text-white transition">Буклеты A4</a></li>
+                <li><a href="#" className="hover:text-white transition">Самоклейка</a></li>
               </ul>
             </div>
             <div>
