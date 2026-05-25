@@ -37,7 +37,10 @@ const FLYERS: SizeOption[] = [
   { value: "a5", label: "A5 148×210 мм", prices: { 1000: 3800, 2000: 5400, 3000: 7000, 5000: 9500, 10000: 16000 } },
   { value: "euro", label: "Евро 99×210 мм", prices: { 1000: 2600, 2000: 3700, 3000: 4800, 5000: 7000, 10000: 12000 } },
   { value: "a4", label: "A4 210×297 мм", prices: { 1000: 6000, 2000: 8600, 3000: 11200, 5000: 16000, 10000: 30000 } },
-  { value: "booklet-a4", label: "Буклет A4 2 сл.", prices: { 1000: 7000, 2000: 10000, 3000: 13200, 5000: 18500, 10000: 36000 } },
+];
+
+const BOOKLETS: SizeOption[] = [
+  { value: "booklet-a4-2", label: "Буклет A4, 2 сложения", prices: { 1000: 7000, 2000: 10000, 3000: 13200, 5000: 18500, 10000: 36000 } },
 ];
 
 const BUSINESS_CARDS: SizeOption[] = [
@@ -57,20 +60,31 @@ const STICKERS: SizeOption[] = [
   { value: "euro", label: "Евро 99×210 мм", prices: { 1000: 7000, 2000: 13000, 5000: 27000, 10000: 52000 } },
   { value: "a4", label: "A4 210×297 мм", prices: { 1000: 18000, 2000: 33000, 5000: 75000, 10000: 143000 } },
   { value: "a3", label: "A3 297×420 мм", prices: { 1000: 35000, 2000: 64000, 5000: 150000, 10000: 295000 } },
-  { value: "circle-58", label: "Круг 58 или 59 мм", prices: { 1000: 2500, 2000: 4000, 5000: 8000, 10000: 15000 } },
-  { value: "circle-61", label: "Круг 61 или 64 мм", prices: { 1000: 2500, 2000: 4000, 5000: 9000, 10000: 16000 } },
-  { value: "circle-69", label: "Круг 69 мм", prices: { 1000: 3000, 2000: 4500, 5000: 9500, 10000: 16500 } },
-  { value: "circle-89", label: "Круг 89 мм", prices: { 1000: 4000, 2000: 6000, 5000: 14000, 10000: 26000 } },
+];
+
+const CIRCLE_STICKERS: SizeOption[] = [
+  { value: "circle-58", label: "Круг Ø 58 или 59 мм", prices: { 1000: 2500, 2000: 4000, 5000: 8000, 10000: 15000 } },
+  { value: "circle-61", label: "Круг Ø 61 или 64 мм", prices: { 1000: 2500, 2000: 4000, 5000: 9000, 10000: 16000 } },
+  { value: "circle-69", label: "Круг Ø 69 мм", prices: { 1000: 3000, 2000: 4500, 5000: 9500, 10000: 16500 } },
+  { value: "circle-89", label: "Круг Ø 89 мм", prices: { 1000: 4000, 2000: 6000, 5000: 14000, 10000: 26000 } },
+];
+
+const LAMINATED_CARDS: SizeOption[] = [
+  { value: "laminated-1-0", label: "Визитка с ламинацией 1+0", prices: { 1000: 3000, 2000: 4500, 3000: 6000, 5000: 9000, 10000: 17000 } },
+];
+
+const ROUNDED_CARDS: SizeOption[] = [
+  { value: "rounded", label: "Визитка со скруглёнными углами", prices: { 1000: 3000, 2000: 4500, 3000: 6500, 5000: 10000, 10000: 18000 } },
+  { value: "hole-rounded", label: "Скруглённые углы + отверстие", prices: { 1000: 3500, 2000: 6000, 3000: 8500, 5000: 14000, 10000: 25000 } },
+];
+
+const EXPRESS: SizeOption[] = [
+  { value: "express-cards", label: "Срочные визитки 300 г/м²", prices: { 1000: 1800, 2000: 3400, 3000: 4800, 5000: 7200, 10000: 13200 } },
+  { value: "express-flyers-a6", label: "Срочные листовки A6", prices: { 1000: 2400, 2000: 3500, 3000: 4600, 5000: 6600, 10000: 10800 } },
+  { value: "express-stickers-50x90", label: "Срочная самоклейка 50×90", prices: { 1000: 2400, 2000: 4200, 5000: 8400, 10000: 14400 } },
 ];
 
 const CATEGORIES: ProductCategory[] = [
-  {
-    value: "flyers",
-    label: "Листовки",
-    icon: "FileText",
-    note: "Плотность 115 г/м², печать 4+0 или 4+4. Срок 3–5 раб. дней.",
-    sizes: FLYERS,
-  },
   {
     value: "business-cards",
     label: "Визитки",
@@ -79,11 +93,53 @@ const CATEGORIES: ProductCategory[] = [
     sizes: BUSINESS_CARDS,
   },
   {
+    value: "flyers",
+    label: "Листовки",
+    icon: "FileText",
+    note: "Плотность 115 г/м², печать 4+0 или 4+4. Срок 3–5 раб. дней.",
+    sizes: FLYERS,
+  },
+  {
+    value: "booklets",
+    label: "Буклеты A4",
+    icon: "Book",
+    note: "Буклеты A4 с 2 сложениями, 115 г/м².",
+    sizes: BOOKLETS,
+  },
+  {
     value: "stickers",
     label: "Самоклейка",
     icon: "Sticker",
-    note: "Основа — бумага.",
+    note: "Основа — бумага. Прямоугольные форматы от 50×90 до A3.",
     sizes: STICKERS,
+  },
+  {
+    value: "circle-stickers",
+    label: "Круглые наклейки",
+    icon: "Circle",
+    note: "Самоклейка круглой формы, основа — бумага.",
+    sizes: CIRCLE_STICKERS,
+  },
+  {
+    value: "laminated-cards",
+    label: "Визитки с ламинацией",
+    icon: "Layers",
+    note: "Ламинация 1+0 защищает от истирания и влаги.",
+    sizes: LAMINATED_CARDS,
+  },
+  {
+    value: "rounded-cards",
+    label: "Скруглённые углы",
+    icon: "Square",
+    note: "Визитки со скруглением, по желанию с отверстием под шнурок.",
+    sizes: ROUNDED_CARDS,
+  },
+  {
+    value: "express",
+    label: "Срочная печать",
+    icon: "Zap",
+    note: "Выполнение в течение 1–2 рабочих дней. Доплата уже включена в стоимость.",
+    sizes: EXPRESS,
   },
 ];
 
