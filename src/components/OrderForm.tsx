@@ -399,10 +399,7 @@ const OrderForm = () => {
               {size && (
                 <div className="flex flex-wrap gap-2 pt-1">
                   {[...tiers, 50000, 100000, 500000].map((t) => {
-                    const tierPrice = size.prices[t];
-                    const label = tierPrice
-                      ? `${t.toLocaleString("ru-RU")} — ${tierPrice.toLocaleString("ru-RU")} ₽`
-                      : t.toLocaleString("ru-RU");
+                    const label = t.toLocaleString("ru-RU");
                     return (
                       <div
                         key={t}
