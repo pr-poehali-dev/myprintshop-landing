@@ -68,7 +68,7 @@ const Index = () => {
     {
       icon: "HeadphonesIcon",
       title: "Поддержка 24/7",
-      description: "Консультация в чате, Telegram или по телефону"
+      description: "Консультация в чате или по телефону"
     },
     {
       icon: "Layout",
@@ -101,7 +101,7 @@ const Index = () => {
     },
     {
       question: "Как отследить статус заказа?",
-      answer: "После оформления вы получите ссылку на трекер заказа и уведомления в Telegram."
+      answer: "После оформления вы получите ссылку на трекер заказа и уведомления о его статусе."
     }
   ];
 
@@ -208,68 +208,6 @@ const Index = () => {
                 <OrderForm />
               </DialogContent>
             </Dialog>
-            <Button size="lg" variant="outline" className="text-lg px-8 py-6">
-              <Icon name="Send" size={20} className="mr-2" />
-              Открыть Telegram-бот
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 px-4 bg-muted/30">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="animate-fade-in">
-              <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-6">
-                Типографии не меняются уже 20 лет
-              </h2>
-              <div className="space-y-4 text-lg text-muted-foreground">
-                <div className="flex gap-3 items-start">
-                  <Icon name="X" size={24} className="text-destructive mt-1 flex-shrink-0" />
-                  <p>Долгие переписки с менеджером вместо автоматизации</p>
-                </div>
-                <div className="flex gap-3 items-start">
-                  <Icon name="X" size={24} className="text-destructive mt-1 flex-shrink-0" />
-                  <p>Неясная стоимость до момента оплаты</p>
-                </div>
-                <div className="flex gap-3 items-start">
-                  <Icon name="X" size={24} className="text-destructive mt-1 flex-shrink-0" />
-                  <p>Необходимость ехать в офис для согласования</p>
-                </div>
-                <div className="flex gap-3 items-start">
-                  <Icon name="X" size={24} className="text-destructive mt-1 flex-shrink-0" />
-                  <p>Сложность подготовки макетов самостоятельно</p>
-                </div>
-              </div>
-            </div>
-            <div className="animate-scale-in">
-              <Card className="bg-white shadow-xl border-2 border-primary/20">
-                <CardContent className="p-8">
-                  <h3 className="text-2xl font-bold text-secondary mb-6 flex items-center gap-2">
-                    <Icon name="Sparkles" size={28} className="text-primary" />
-                    Решение — ProPhoto
-                  </h3>
-                  <div className="space-y-4 text-foreground">
-                    <div className="flex gap-3 items-start">
-                      <Icon name="CheckCircle" size={24} className="text-primary mt-1 flex-shrink-0" />
-                      <p>Автоматический калькулятор стоимости</p>
-                    </div>
-                    <div className="flex gap-3 items-start">
-                      <Icon name="CheckCircle" size={24} className="text-primary mt-1 flex-shrink-0" />
-                      <p>Загрузка макета онлайн за 30 секунд</p>
-                    </div>
-                    <div className="flex gap-3 items-start">
-                      <Icon name="CheckCircle" size={24} className="text-primary mt-1 flex-shrink-0" />
-                      <p>Готовые шаблоны дизайнов</p>
-                    </div>
-                    <div className="flex gap-3 items-start">
-                      <Icon name="CheckCircle" size={24} className="text-primary mt-1 flex-shrink-0" />
-                      <p>Онлайн-оплата и трекинг заказа</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
           </div>
         </div>
       </section>
@@ -374,22 +312,6 @@ const Index = () => {
               </Card>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="py-16 px-4 bg-gradient-to-r from-primary to-blue-600 text-white">
-        <div className="container mx-auto max-w-4xl text-center">
-          <Icon name="Send" size={64} className="mx-auto mb-6 opacity-90" />
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Оформляйте заказ в Telegram
-          </h2>
-          <p className="text-xl mb-8 opacity-90">
-            Быстрее и удобнее — прямо в мессенджере. Все функции сайта в боте.
-          </p>
-          <Button size="lg" variant="secondary" className="text-lg px-8 py-6">
-            <Icon name="Send" size={20} className="mr-2" />
-            Открыть @ProPhoto_bot
-          </Button>
         </div>
       </section>
 
