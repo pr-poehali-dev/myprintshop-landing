@@ -187,17 +187,16 @@ const Index = () => {
       <section className="pt-32 pb-20 px-4 bg-gradient-to-br from-background via-muted/20 to-background">
         <div className="container mx-auto text-center max-w-5xl animate-fade-in">
           <h1 className="text-5xl md:text-7xl font-extrabold text-secondary mb-6 leading-tight">
-            Онлайн-типография<br />
-            <span className="text-primary">нового поколения</span>
+            Типография <span className="text-primary">для вас и для вашего бизнеса</span>
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-3xl mx-auto font-light">
-            Загружайте макет, выбирайте параметры, оплачивайте — всё онлайн за 5 минут. Никаких визитов в офис.
+            Визитки, листовки, буклеты, упаковка, каталоги, широкоформатная печать и т. д. Рассчитайте стоимость и оформите заказ онлайн, без звонков и поездок в офис.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Dialog open={orderDialogOpen} onOpenChange={setOrderDialogOpen}>
               <DialogTrigger asChild>
-                <Button size="lg" className="text-xl md:text-2xl px-12 py-8 md:px-16 md:py-10 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all">
-                  <Icon name="ShoppingCart" size={28} className="mr-3" />
+                <Button size="lg" className="text-lg px-8 py-6 shadow-lg hover:shadow-xl transition-all">
+                  <Icon name="ShoppingCart" size={20} className="mr-2" />
                   Сделать заказ
                 </Button>
               </DialogTrigger>
@@ -208,6 +207,12 @@ const Index = () => {
                 <OrderForm />
               </DialogContent>
             </Dialog>
+            <Button asChild size="lg" variant="outline" className="text-lg px-8 py-6">
+              <a href="#calculator">
+                <Icon name="Calculator" size={20} className="mr-2" />
+                Рассчитать стоимость
+              </a>
+            </Button>
           </div>
         </div>
       </section>
@@ -243,7 +248,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-gradient-to-br from-background to-muted/30">
+      <section id="calculator" className="py-20 px-4 bg-gradient-to-br from-background to-muted/30 scroll-mt-20">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-secondary mb-4">
