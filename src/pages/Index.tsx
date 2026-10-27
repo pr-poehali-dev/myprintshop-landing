@@ -196,8 +196,8 @@ const Index = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Dialog open={orderDialogOpen} onOpenChange={setOrderDialogOpen}>
               <DialogTrigger asChild>
-                <Button size="lg" className="text-lg px-8 py-6 shadow-lg hover:shadow-xl transition-all">
-                  <Icon name="ShoppingCart" size={20} className="mr-2" />
+                <Button size="lg" className="text-xl md:text-2xl px-12 py-8 md:px-16 md:py-10 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all">
+                  <Icon name="ShoppingCart" size={28} className="mr-3" />
                   Сделать заказ
                 </Button>
               </DialogTrigger>
@@ -209,20 +209,6 @@ const Index = () => {
               </DialogContent>
             </Dialog>
           </div>
-        </div>
-      </section>
-
-      <section className="py-20 px-4 bg-gradient-to-br from-background to-muted/30">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-secondary mb-4">
-              Рассчитайте стоимость прямо сейчас
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              Прозрачное ценообразование без скрытых платежей
-            </p>
-          </div>
-          <PriceCalculator onOrder={() => setOrderDialogOpen(true)} />
         </div>
       </section>
 
@@ -254,6 +240,20 @@ const Index = () => {
               Все услуги <Icon name="ArrowRight" size={20} className="ml-2" />
             </Button>
           </div>
+        </div>
+      </section>
+
+      <section className="py-20 px-4 bg-gradient-to-br from-background to-muted/30">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-secondary mb-4">
+              Рассчитайте стоимость прямо сейчас
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Прозрачное ценообразование без скрытых платежей
+            </p>
+          </div>
+          <PriceCalculator onOrder={() => setOrderDialogOpen(true)} />
         </div>
       </section>
 
